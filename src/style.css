@@ -1,0 +1,25 @@
+#canvas {
+	border: 1px solid #000;
+	display: flex;
+	width: 100%;
+}
+
+#score-container {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	font-family: monospace;
+	margin-top: 10px;
+	text-align: center;
+}
+
+#score-container p {
+	margin: 0;
+	display: flex;
+	flex-direction: column;
+	font-size: 40px;
+}
+
+#score-container span {
+	font-weight: bold;
+}

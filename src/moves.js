@@ -29,13 +29,13 @@ function moveBall(ball, player1, player2, gameState) {
 
 function movePaddles(ball, player1, player2) {
 	// Move player1
-	movePaddle(player1, ball);
+	movePaddle(player1);
 	// if ai is enabled, move the paddle to the ball
 	if (player2.ai) {
-		player2.y = ball.y - player2.height / 2 + AI_LEVEL;
+		player2.y = ball.y - (player2.height / 2) * AI_LEVEL;
 	} else {
 		// Move player2
-		movePaddle(player2, canvas);
+		movePaddle(player2);
 	}
 }
 

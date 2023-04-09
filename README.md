@@ -18,6 +18,12 @@ The game can be run with:
 
     yarn DEV
 
+## TODO
+
+-   Add start screen with settings
+-   Custom colors for pads and ball
+-   Move to Typescript
+
 ## License
 
 The source code is licensed under the MIT license.

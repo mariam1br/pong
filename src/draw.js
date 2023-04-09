@@ -1,33 +1,133 @@
-function drawBorder(ctx, canvas) {
+import { ctx, canvas, GAME_FONT_FAMILY } from './constants.js';
+
+function drawBorder() {
 	ctx.strokeStyle = '#aaa';
 	ctx.lineWidth = 5;
 	ctx.strokeRect(0, 0, canvas.width, canvas.height);
 }
 
-function drawMiddleLine(ctx, canvas) {
+function drawNet() {
 	ctx.beginPath();
 	ctx.setLineDash([10, 15]);
 	ctx.moveTo(canvas.width / 2, 0);
 	ctx.lineTo(canvas.width / 2, canvas.height);
 	ctx.stroke();
-	// Draw a small circle in the center of the line
+}
+
+function drawPaddles(player1, player2) {
+	drawRect(
+		player1.x,
+		player1.y,
+		player1.width,
+		player1.height,
+		player1.color
+	);
+	drawRect(
+		player2.x,
+		player2.y,
+		player2.width,
+		player2.height,
+		player2.color
+	);
+}
+
+function drawBall(ball) {
+	drawCircle(ball.x, ball.y, ball.radius, ball.color);
+}
+
+function showNewGameMessage() {
+	// Add a start screen message
+	drawText(
+		'Press Space to start a new game',
+		canvas.width / 2,
+		canvas.height / 2 + 100,
+		'#ffffff',
+		GAME_FONT_FAMILY,
+		16,
+		'center'
+	);
+}
+
+function showGameOverMessage(winner) {
+	clearCanvas();
+	drawText(
+		'Game Over',
+		canvas.width / 2,
+		canvas.height / 2 - 100,
+		'#ffffff',
+		GAME_FONT_FAMILY,
+		48,
+		'center'
+	);
+	drawText(
+		`${winner} wins`,
+		canvas.width / 2,
+		canvas.height / 2,
+		'#ffffff',
+		GAME_FONT_FAMILY,
+		32,
+		'center'
+	);
+	showNewGameMessage();
+}
+
+function showScore(player1Score, player2Score) {
+	drawText(
+		player1Score,
+		canvas.width / 4,
+		canvas.height / 5,
+		'#ffffff',
+		GAME_FONT_FAMILY,
+		60,
+		'center'
+	);
+	drawText(
+		player2Score,
+		(canvas.width / 4) * 3,
+		canvas.height / 5,
+		'#ffffff',
+		GAME_FONT_FAMILY,
+		60,
+		'center'
+	);
+}
+
+function drawElements(ball, player1, player2) {
+	drawBorder();
+	drawNet();
+	drawPaddles(player1, player2);
+	drawBall(ball);
+}
+
+function drawRect(x, y, w, h, color) {
+	ctx.fillStyle = color;
+	ctx.fillRect(x, y, w, h);
+}
+
+function drawCircle(x, y, r, color) {
+	ctx.fillStyle = color;
 	ctx.beginPath();
-	ctx.arc(canvas.width / 2, canvas.height / 2, 10, 0, 2 * Math.PI);
-	ctx.fillStyle = '#aaa';
+	ctx.arc(x, y, r, 0, Math.PI * 2, true);
+	ctx.closePath();
 	ctx.fill();
 }
 
-function drawPaddles(ctx, paddle1, paddle2) {
-	ctx.fillStyle = '#ffffff';
-	ctx.fillRect(paddle1.x, paddle1.y, paddle1.width, paddle1.height);
-	ctx.fillRect(paddle2.x, paddle2.y, paddle2.width, paddle2.height);
+function drawText(text, x, y, color, fontFamily, fontSize, textAlign) {
+	ctx.fillStyle = color;
+	ctx.font = `${fontSize}px ${fontFamily}`;
+	ctx.textAlign = textAlign;
+	ctx.fillText(text, x, y);
 }
 
-function drawBall(ctx, ball) {
-	ctx.beginPath();
-	ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
-	ctx.fillStyle = '#ffffff';
-	ctx.fill();
+function clearCanvas() {
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
-export { drawBorder, drawMiddleLine, drawPaddles, drawBall };
+export {
+	drawElements,
+	drawText,
+	clearCanvas,
+	showGameOverMessage,
+	showNewGameMessage,
+	showScore,
+};

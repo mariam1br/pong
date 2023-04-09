@@ -1,10 +1,12 @@
-export class Paddle {
-	constructor(height, width, x, y) {
+export class Player {
+	constructor(x, y, height, width, score, color, ai = false) {
 		this._height = height;
-		this._velocityY = 0;
 		this._width = width;
 		this._x = x;
 		this._y = y;
+		this._score = score;
+		this._color = color;
+		this._ai = ai;
 	}
 
 	get height() {
@@ -45,5 +47,29 @@ export class Paddle {
 
 	set y(value) {
 		this._y = value;
+	}
+
+	get score() {
+		return this._score;
+	}
+
+	set score(value) {
+		this._score = value;
+	}
+
+	set color(value) {
+		this._color = value;
+	}
+
+	get color() {
+		return this._color;
+	}
+
+	get ai() {
+		return this._ai;
+	}
+
+	set ai(value) {
+		this._ai = value;
 	}
 }

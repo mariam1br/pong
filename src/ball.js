@@ -1,10 +1,12 @@
 export class Ball {
-	constructor(speedX, speedY, x, y) {
-		this._radius = 10;
-		this._velocityX = speedX;
-		this._velocityY = speedY;
+	constructor(x, y, velocityX, velocityY, speed, color) {
 		this._x = x;
 		this._y = y;
+		this._velocityX = velocityX;
+		this._velocityY = velocityY;
+		this._speed = speed;
+		this._color = color;
+		this._radius = 10;
 	}
 
 	get radius() {
@@ -45,5 +47,21 @@ export class Ball {
 
 	set y(value) {
 		this._y = value;
+	}
+
+	get color() {
+		return this._color;
+	}
+
+	set color(value) {
+		this._color = value;
+	}
+
+	get speed() {
+		return this._speed;
+	}
+
+	set speed(value) {
+		this._speed = value;
 	}
 }

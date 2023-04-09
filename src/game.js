@@ -23,10 +23,10 @@ let lastTime = 0;
 // Set the initial winner
 let winner = '';
 // Initialize game state
-let gameState = '';
+export let gameState = '';
 
 // Create player1 and player2 instances
-let player1 = new Player(
+export let player1 = new Player(
 	0,
 	canvas.height / 2 - PADDLE_HEIGHT / 2,
 	PADDLE_HEIGHT,
@@ -34,7 +34,7 @@ let player1 = new Player(
 	0,
 	'#ffffff'
 );
-let player2 = new Player(
+export let player2 = new Player(
 	canvas.width - PADDLE_WIDTH,
 	canvas.height / 2 - PADDLE_HEIGHT / 2,
 	PADDLE_HEIGHT,
@@ -45,7 +45,7 @@ let player2 = new Player(
 );
 
 // Create a ball instance
-let ball = new Ball(
+export let ball = new Ball(
 	canvas.width / 2,
 	canvas.height / 2,
 	BALL_SPEED,

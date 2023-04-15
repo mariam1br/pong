@@ -54,7 +54,6 @@ const drawPaddles = (players: Players): void => {
 
   // draw player2 paddle
   if (player2) {
-    console.log({ player2 });
     if (player2.width && player2.height && player2.color) {
       drawRect({
         x: player2.x,

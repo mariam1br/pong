@@ -22,7 +22,6 @@ The game can be run with:
 
 -   Add start screen with settings
 -   Custom colors for pads and ball
--   Move to Typescript
 
 ## License
 

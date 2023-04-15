@@ -1,15 +1,21 @@
 import { canvas } from "./constants.js";
-import { Ball } from "./ball.js";
 import { Player } from "./player.js";
 import { BallAndPlayer, BallAndPlayers } from "./types.js";
 
-const checkCollisions = (ballAndPlayers: BallAndPlayers): Ball => {
+// lazy import the sound file so it's only loaded when needed
+let pongSound: () => Promise<string> = async () => (await import("./sounds/pong.wav")).default;
+
+const checkCollisions = async (ballAndPlayers: BallAndPlayers) => {
   // destructure the args
   let { ball, player1, player2 } = ballAndPlayers;
   // If the ball is on the left, player1 is the player, otherwise player2 is the player
   let player: Player = ball.x < canvas.width / 2 ? player1 : player2;
 
   if (isCollision({ ball, player })) {
+    // Play a sound when the ball hits the paddle
+    let audio = new Audio(await pongSound());
+    audio.play();
+
     // Where on the paddle did the ball hit?
     let collidePoint: number = ball.y - (player.y + player.height / 2);
 
@@ -31,7 +37,6 @@ const checkCollisions = (ballAndPlayers: BallAndPlayers): Ball => {
     // Increase the ball's speed
     ball.speed += 0.5;
   }
-  return ball;
 };
 
 const isCollision = (ballAndPlayer: BallAndPlayer): boolean => {

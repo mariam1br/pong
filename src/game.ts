@@ -54,11 +54,11 @@ export let ball: Ball = new Ball(
 
 export const startNewGame = () => {
   if (gameState === "") {
-    ({ player1, player2, winner } = resetScores({ player1, player2, winner }));
+    winner = resetScores({ player1, player2, winner });
     gameState = "start";
   }
-  ball = resetBall(ball);
-  ({ player1, player2 } = resetPaddle({ player1, player2 }));
+  resetBall(ball);
+  resetPaddle({ player1, player2 });
 
   requestAnimationFrame(update);
 };
@@ -73,14 +73,9 @@ const update = (): void => {
   }
   clearCanvas();
   drawElements({ ball, player1, player2 });
-  ({ ball, player1, player2, gameState } = moveBall(
-    ball,
-    player1,
-    player2,
-    gameState
-  ));
+  moveBall(ball, player1, player2, gameState);
   movePaddles(ball, player1, player2);
-  ball = checkCollisions({ ball, player1, player2 });
+  checkCollisions({ ball, player1, player2 });
   showScore(player1.score, player2.score);
 
   requestAnimationFrame(update);

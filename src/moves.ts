@@ -24,14 +24,13 @@ function moveBall(
     ball.velocityX = -ball.velocityX;
     player1.score++;
     gameState = "scores";
-    ball = resetBall(ball);
+    resetBall(ball);
   } else if (ball.x - ball.radius < 0) {
     ball.velocityX = -ball.velocityX;
     player2.score++;
     gameState = "scores";
-    ball = resetBall(ball);
+    resetBall(ball);
   }
-  return { ball, player1, player2, gameState };
 }
 
 const movePaddles = (ball: Ball, player1: Player, player2: Player): void => {

@@ -1,8 +1,10 @@
 #canvas {
-	display: flex;
+  display: flex;
+  width: 100%;
 }
 
 body {
-	display: grid;
-	place-items: center;
+  display: grid;
+  place-items: center;
+  background-color: black;
 }

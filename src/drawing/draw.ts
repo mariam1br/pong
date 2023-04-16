@@ -1,11 +1,11 @@
-import { ctx, canvas, GAME_FONT_FAMILY } from "./constants.js";
-import { Ball } from "./ball.js";
-import { BallAndPlayers, Draw, Players } from "./types.js";
+import { ctx, canvas, GAME_FONT_FAMILY, DEFAULT_COLOR } from "../constants";
+import { Ball } from "../classes/ball";
+import { BallAndPlayers, Draw, Players } from "../types";
 
 const drawBorder = (): void => {
   // Draw a border around the canvas
   let borderThickness = 5;
-  let borderColor = "#aaa";
+  let borderColor = "rgba(170, 170, 170, 1)";
   ctx.lineWidth = borderThickness;
   ctx.strokeStyle = borderColor;
   ctx.strokeRect(0, 0, canvas.width, canvas.height);
@@ -60,7 +60,7 @@ const drawPaddles = (players: Players): void => {
         y: player2.y,
         width: player2.width || 0,
         height: player2.height || 0,
-        color: player2.color || "#ffffff",
+        color: player2.color || DEFAULT_COLOR,
       });
     } else {
       throw new Error("player2 paddle is missing a required property");
@@ -82,87 +82,6 @@ const drawBall = (ball: Ball): void => {
   drawCircle({ x: ball.x, y: ball.y, radius: ball.radius, color: ball.color });
 };
 
-const showNewGameMessage = (): void => {
-  const text = "Press Space to start a new game";
-  const x = canvas.width / 2;
-  const y = canvas.height / 2 + 100;
-  const color = "#ffffff";
-  const fontFamily = GAME_FONT_FAMILY;
-  const fontSize = 16;
-  const textAlign = "center";
-  if (canvas && canvas.width && canvas.height) {
-    drawText({ text, x, y, color, fontFamily, fontSize, textAlign });
-  }
-};
-
-const showGameOverMessage = (winner: string): void => {
-  clearCanvas();
-
-  const messageFontFamily = GAME_FONT_FAMILY;
-  const messageTextAlign = "center";
-  const messageColor = "#ffffff";
-  const messageWidth = canvas.width / 2;
-  const messageHeight = canvas.height / 2;
-
-  // draw game over message
-  drawText({
-    text: "Game Over",
-    x: messageWidth,
-    y: messageHeight - 100,
-    color: messageColor,
-    fontFamily: messageFontFamily,
-    fontSize: 48,
-    textAlign: messageTextAlign,
-  });
-
-  // draw winner message
-  drawText({
-    text: `${winner} wins`,
-    x: messageWidth,
-    y: messageHeight,
-    color: messageColor,
-    fontFamily: messageFontFamily,
-    fontSize: 32,
-    textAlign: messageTextAlign,
-  });
-
-  // draw new game message
-  showNewGameMessage();
-};
-
-// Draw the score for both players
-const showScore = (player1Score: number, player2Score: number): void => {
-  const scoreFontFamily = GAME_FONT_FAMILY;
-  const scoreTextSize = 60;
-  const scoreTextAlign = "center";
-  const scoreColor = "#ffffff";
-  const leftPlayerScorePosition = canvas.width / 4;
-  const rightPlayerScorePosition = (canvas.width / 4) * 3;
-  const scoresCanvasHeight = canvas.height / 5;
-
-  // Draw player 1's score
-  drawText({
-    text: player1Score.toString(),
-    x: leftPlayerScorePosition,
-    y: scoresCanvasHeight,
-    color: scoreColor,
-    fontFamily: scoreFontFamily,
-    fontSize: scoreTextSize,
-    textAlign: scoreTextAlign,
-  });
-
-  // Draw player 2's score
-  drawText({
-    text: player2Score.toString(),
-    x: rightPlayerScorePosition,
-    y: scoresCanvasHeight,
-    color: scoreColor,
-    fontFamily: scoreFontFamily,
-    fontSize: scoreTextSize,
-    textAlign: scoreTextAlign,
-  });
-};
-
 const drawElements = (ballAndPlayers: BallAndPlayers): void => {
   const { ball, player1, player2 } = ballAndPlayers;
   // Draw the game's border
@@ -179,7 +98,7 @@ const drawElements = (ballAndPlayers: BallAndPlayers): void => {
 };
 
 const drawRect = (draw: Draw): void => {
-  const { x, y, width: w = 0, height: h = 0, color = "#ffffff" } = draw;
+  const { x, y, width: w = 0, height: h = 0, color = DEFAULT_COLOR } = draw;
   // Check for invalid values.
   if (w <= 0 || h <= 0) {
     throw new Error("Invalid parameter");
@@ -216,7 +135,17 @@ const drawCircle = (draw: Draw): void => {
 };
 
 const drawText = (draw: Draw): void => {
-  const { text, x, y, color, fontFamily, fontSize, textAlign } = draw;
+  const {
+    text,
+    x,
+    y,
+    color = DEFAULT_COLOR,
+    fontFamily = GAME_FONT_FAMILY,
+    fontSize = 16,
+    textAlign = "center",
+    isBold = false,
+    hasShadow = false,
+  } = draw;
   // Check that the text is not empty.
   if (!text) {
     throw new Error("Text is empty.");
@@ -225,28 +154,25 @@ const drawText = (draw: Draw): void => {
   if (typeof x !== "number" || typeof y !== "number") {
     throw new Error("Coordinates are not numbers.");
   }
-  // Check that the color is a string.
-  if (typeof color !== "string") {
-    throw new Error("Color is not a string.");
-  }
-  // Check that the font family is a string.
-  if (typeof fontFamily !== "string") {
-    throw new Error("Font family is not a string.");
-  }
-  // Check that the font size is a number.
-  if (typeof fontSize !== "number") {
-    throw new Error("Font size is not a number.");
-  }
-  // Check that the text alignment is a string.
-  if (typeof textAlign !== "string") {
-    throw new Error("Text alignment is not a string.");
-  }
+
   // Set the fill color.
   ctx.fillStyle = color;
   // Set the font.
-  ctx.font = `${fontSize}px ${fontFamily}`;
+  ctx.font = `${isBold && "bold"} ${fontSize}px ${fontFamily}`;
   // Set the text alignment.
   ctx.textAlign = textAlign;
+
+  // clear context shadow
+  ctx.shadowColor = "transparent";
+
+  // add a shadow to the text
+  if (hasShadow) {
+    ctx.shadowColor = "rgba(128, 128, 128)";
+    ctx.shadowBlur = 10;
+    ctx.shadowOffsetX = 5;
+    ctx.shadowOffsetY = 5;
+  }
+
   // Draw the text.
   ctx.fillText(text, x, y);
 };
@@ -266,11 +192,4 @@ const clearCanvas = (): void => {
   }
 };
 
-export {
-  drawElements,
-  drawText,
-  clearCanvas,
-  showGameOverMessage,
-  showNewGameMessage,
-  showScore,
-};
+export { drawElements, drawText, clearCanvas };

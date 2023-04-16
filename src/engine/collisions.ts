@@ -1,9 +1,10 @@
-import { canvas } from "./constants.js";
-import { Player } from "./player.js";
-import { BallAndPlayer, BallAndPlayers } from "./types.js";
+import { canvas } from "../constants";
+import { Player } from "../classes/player";
+import { BallAndPlayer, BallAndPlayers } from "../types";
 
 // lazy import the sound file so it's only loaded when needed
-let pongSound: () => Promise<string> = async () => (await import("./sounds/pong.wav")).default;
+let pongSound: () => Promise<string> = async () =>
+  (await import("../sounds/pong.wav")).default;
 
 const checkCollisions = async (ballAndPlayers: BallAndPlayers) => {
   // destructure the args

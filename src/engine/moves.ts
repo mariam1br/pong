@@ -1,13 +1,14 @@
-import { Ball } from "./ball.js";
-import { AI_LEVEL, canvas } from "./constants.js";
-import { Player } from "./player.js";
-import { resetBall } from "./reset.js";
+import { Ball } from "../classes/ball";
+import { AI_LEVEL, canvas } from "../constants";
+import { Player } from "../classes/player";
+import { resetBall } from "../reset";
+import { GameState } from "../types";
 
 function moveBall(
   ball: Ball,
   player1: Player,
   player2: Player,
-  gameState: string
+  gameState: GameState
 ) {
   // Move the ball
   // Add a random sign to the ball's velocity
@@ -23,12 +24,12 @@ function moveBall(
   if (ball.x + ball.radius > canvas.width) {
     ball.velocityX = -ball.velocityX;
     player1.score++;
-    gameState = "scores";
+    gameState = GameState.score;
     resetBall(ball);
   } else if (ball.x - ball.radius < 0) {
     ball.velocityX = -ball.velocityX;
     player2.score++;
-    gameState = "scores";
+    gameState = GameState.score;
     resetBall(ball);
   }
 }

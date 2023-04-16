@@ -1,8 +1,8 @@
-import { Ball } from "./ball.js";
-import { BALL_SPEED, PADDLE_HEIGHT, canvas } from "./constants.js";
-import { PlayersAndWinner, Players } from "./types.js";
+import { Ball } from "./classes/ball";
+import { BALL_SPEED, PADDLE_HEIGHT, canvas } from "./constants";
+import { PlayersAndWinner, Players } from "./types";
 
-const resetScores = (playersAndWinner: PlayersAndWinner): string => {
+const resetScores = (playersAndWinner: PlayersAndWinner) => {
   // destructure the args
   let { player1, player2, winner } = playersAndWinner;
 
@@ -11,10 +11,7 @@ const resetScores = (playersAndWinner: PlayersAndWinner): string => {
   player2.score = 0;
 
   // reset winner
-  winner = "";
-
-  // return the new values
-  return winner;
+  winner = null;
 };
 
 const resetBall = (ball: Ball): void => {

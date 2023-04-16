@@ -1,5 +1,10 @@
-import { player1, player2, gameState, startNewGame } from "./game";
+import { getGameInstance } from "./classes/game";
 import { PADDLE_HEIGHT, PADDLE_SPEED } from "./constants";
+import { GameState } from "./types";
+import { drawMenu, menuActions, menuCursorDown, menuCursorUp } from "./ui/menu";
+
+// destructuring the game instance
+let { player1, player2, gameState, newGame, setPlayers } = getGameInstance();
 
 document.addEventListener("mousemove", function (event: MouseEvent) {
   // Move player1 paddle
@@ -13,16 +18,12 @@ document.addEventListener("touchmove", function (event: TouchEvent) {
 
 document.addEventListener("touchstart", function (_event: TouchEvent) {
   // Start a new game loop
-  if (gameState === "") {
-    startNewGame();
-  }
+  newGame();
 });
 
 document.addEventListener("click", function (_event: Event) {
   // Start a new game loop
-  if (gameState === "") {
-    startNewGame();
-  }
+  newGame();
 });
 
 // Add event listeners for paddle movement
@@ -34,15 +35,36 @@ document.addEventListener("keydown", function (event: KeyboardEvent) {
     // Move player1 down
     player1.velocityY = PADDLE_SPEED;
   } else if (event.code === "ArrowUp") {
+    if (gameState === GameState.menu) {
+      event.preventDefault();
+      menuCursorUp();
+    }
     // Move player2 up
     player2.velocityY = -PADDLE_SPEED;
   } else if (event.code === "ArrowDown") {
+    if (gameState === GameState.menu) {
+      event.preventDefault();
+      menuCursorDown();
+    }
     // Move player2 down
     player2.velocityY = PADDLE_SPEED;
-  }
-  if (event.code === "Space" && gameState === "") {
-    // Space bar key code
-    startNewGame(); // Start a new game loop
+  } else if (event.code === "Space" && gameState === GameState.menu) {
+    // Start a new game loop
+    newGame();
+  } else if (event.code === "Escape") {
+    // Draw the menu
+    drawMenu();
+  } else if (event.code === "Enter" && gameState === GameState.menu) {
+    // If the Enter key is pressed in menu, do something based on the selected menu option
+    menuActions();
+  } else if (event.code === "Digit1") {
+    // Set the number of players to 1
+    console.log("Setting players to 1");
+    setPlayers(1);
+  } else if (event.code === "Digit2") {
+    // Set the number of players to 2
+    console.log("Setting players to 2");
+    setPlayers(2);
   }
 });
 

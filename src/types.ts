@@ -1,5 +1,5 @@
-import { Ball } from "./ball";
-import { Player } from "./player";
+import { Ball } from "./classes/ball";
+import { Player } from "./classes/player";
 
 export type Players = {
   player1: Player;
@@ -7,7 +7,7 @@ export type Players = {
 };
 
 export type PlayersAndWinner = Players & {
-  winner: string;
+  winner: Player | null;
 };
 
 export type BallAndPlayers = Players & {
@@ -30,4 +30,13 @@ export type Draw = {
   fontSize?: number;
   textAlign?: CanvasTextAlign;
   text?: string;
+  isBold?: boolean;
+  hasShadow?: boolean;
 };
+
+export enum GameState {
+  gameOver = "gameOver",
+  menu = "menu",
+  score = "score",
+  start = "start",
+}

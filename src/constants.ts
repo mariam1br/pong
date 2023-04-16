@@ -23,6 +23,8 @@ export const WINNING_SCORE: number = 2;
 
 // Define the game font
 export const GAME_FONT_FAMILY: string = "'Press Start 2P', cursive";
+// Define the default color
+export const DEFAULT_COLOR: string = "rgba(255, 255, 255)";
 
 // Define the AI level
 export const AI_LEVEL: number = 0.1;

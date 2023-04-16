@@ -1,4 +1,5 @@
 export class Player {
+  private _name: string;
   private _height: number;
   private _width: number;
   private _x: number;
@@ -9,6 +10,7 @@ export class Player {
   private _velocityY!: number;
 
   constructor(
+    name: string,
     x: number,
     y: number,
     height: number,
@@ -17,6 +19,7 @@ export class Player {
     color: string,
     ai = false
   ) {
+    this._name = name;
     this._height = height;
     this._width = width;
     this._x = x;
@@ -88,5 +91,9 @@ export class Player {
 
   set ai(value) {
     this._ai = value;
+  }
+
+  public toString() {
+    return `${this._name}`;
   }
 }

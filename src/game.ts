@@ -89,4 +89,4 @@ const gameOver = (): void => {
   }
 };
 
-showNewGameMessage();
+// showNewGameMessage();

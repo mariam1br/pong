@@ -93,6 +93,14 @@ export class Player {
     this._ai = value;
   }
 
+  get name() {
+    return this._name;
+  }
+
+  set name(value) {
+    this._name = value;
+  }
+
   public toString() {
     return `${this._name}`;
   }

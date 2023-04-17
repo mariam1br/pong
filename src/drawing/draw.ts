@@ -2,6 +2,10 @@ import { ctx, canvas, GAME_FONT_FAMILY, DEFAULT_COLOR } from "../constants";
 import { Ball } from "../classes/ball";
 import { BallAndPlayers, Draw, Players } from "../types";
 
+// Set the canvas width and height to the window width and height
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
 const drawBorder = (): void => {
   // Draw a border around the canvas
   let borderThickness = 5;
@@ -35,6 +39,7 @@ const drawNet = (): void => {
 const drawPaddles = (players: Players): void => {
   // destructure the args
   let { player1, player2 } = players;
+
   // draw player1 paddle
   if (player1) {
     if (player1.width && player1.height && player1.color) {
@@ -141,7 +146,7 @@ const drawText = (draw: Draw): void => {
     y,
     color = DEFAULT_COLOR,
     fontFamily = GAME_FONT_FAMILY,
-    fontSize = 16,
+    fontSize = 32,
     textAlign = "center",
     isBold = false,
     hasShadow = false,
@@ -154,11 +159,10 @@ const drawText = (draw: Draw): void => {
   if (typeof x !== "number" || typeof y !== "number") {
     throw new Error("Coordinates are not numbers.");
   }
-
   // Set the fill color.
   ctx.fillStyle = color;
   // Set the font.
-  ctx.font = `${isBold && "bold"} ${fontSize}px ${fontFamily}`;
+  ctx.font = `${isBold ? "bold" : ""} ${fontSize}px ${fontFamily}`;
   // Set the text alignment.
   ctx.textAlign = textAlign;
 

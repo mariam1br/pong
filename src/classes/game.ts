@@ -16,12 +16,15 @@ import { Ball } from "./ball";
 import { Player } from "./player";
 
 export class Game {
-  _players: number = 1;
+  players: number = 1;
   winner: Player | null;
   player1: Player;
   player2: Player;
   ball: Ball;
   gameState: GameState;
+
+  private static instance: Game;
+
   constructor() {
     this.winner = null;
     this.player1 = new Player(
@@ -34,14 +37,14 @@ export class Game {
       DEFAULT_COLOR
     );
     this.player2 = new Player(
-      this._players > 1 ? "Player 2" : "Computer",
+      this.getPlayer2Name(),
       canvas.width - PADDLE_WIDTH,
       canvas.height / 2 - PADDLE_HEIGHT / 2,
       PADDLE_HEIGHT,
       PADDLE_WIDTH,
       0,
       DEFAULT_COLOR,
-      this._players > 1 ? false : true
+      this.getAI()
     );
     this.ball = new Ball(
       canvas.width / 2,
@@ -54,14 +57,29 @@ export class Game {
     this.gameState = GameState.menu;
   }
 
+  static getInstance() {
+    if (!Game.instance) {
+      Game.instance = new Game();
+    }
+    return Game.instance;
+  }
+
   setPlayers(players: number) {
-    this._players = players;
+    this.players = players;
+    this.player2.ai = this.getAI();
+    this.player2.name = this.getPlayer2Name();
+  }
+
+  getPlayer2Name(): string {
+    return this.players > 1 ? "Player 2" : "Computer";
+  }
+
+  getAI(): boolean {
+    return this.players > 1 ? false : true;
   }
 
   newGame() {
-    // getGameInstance();
     if (
-      !this.gameState ||
       this.gameState === GameState.menu ||
       this.gameState === GameState.gameOver
     ) {
@@ -113,14 +131,3 @@ export class Game {
     }
   }
 }
-
-// create only one instance of the game and a method to access it
-let game: Game;
-export const getGameInstance = (): Game => {
-  if (!game) {
-    console.log("creating new game");
-    game = new Game();
-  }
-  console.log("returning game", game);
-  return game;
-};

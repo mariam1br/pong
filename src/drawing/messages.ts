@@ -18,9 +18,6 @@ const showNewGameMessage = (): void => {
 const showGameOverMessage = (winner: Player): void => {
   clearCanvas();
 
-  const messageFontFamily = GAME_FONT_FAMILY;
-  const messageTextAlign = "center";
-  const messageColor = DEFAULT_COLOR;
   const messageWidth = canvas.width / 2;
   const messageHeight = canvas.height / 2;
 
@@ -29,10 +26,7 @@ const showGameOverMessage = (winner: Player): void => {
     text: "Game Over",
     x: messageWidth,
     y: messageHeight - 100,
-    color: messageColor,
-    fontFamily: messageFontFamily,
     fontSize: 48,
-    textAlign: messageTextAlign,
   });
 
   // draw winner message
@@ -40,10 +34,7 @@ const showGameOverMessage = (winner: Player): void => {
     text: `${winner.toString()} wins`,
     x: messageWidth,
     y: messageHeight,
-    color: messageColor,
-    fontFamily: messageFontFamily,
     fontSize: 32,
-    textAlign: messageTextAlign,
   });
 
   // draw new game message
@@ -52,34 +43,25 @@ const showGameOverMessage = (winner: Player): void => {
 
 // Draw the score for both players
 const showScore = (player1Score: number, player2Score: number): void => {
-  const scoreFontFamily = GAME_FONT_FAMILY;
-  const scoreTextSize = 60;
-  const scoreTextAlign = "center";
-  const scoreColor = DEFAULT_COLOR;
   const leftPlayerScorePosition = canvas.width / 4;
   const rightPlayerScorePosition = (canvas.width / 4) * 3;
-  const scoresCanvasHeight = canvas.height / 5;
+  const y = canvas.height / 5;
+  const fontSize = 120;
 
   // Draw player 1's score
   drawText({
     text: player1Score.toString(),
     x: leftPlayerScorePosition,
-    y: scoresCanvasHeight,
-    color: scoreColor,
-    fontFamily: scoreFontFamily,
-    fontSize: scoreTextSize,
-    textAlign: scoreTextAlign,
+    y,
+    fontSize,
   });
 
   // Draw player 2's score
   drawText({
     text: player2Score.toString(),
     x: rightPlayerScorePosition,
-    y: scoresCanvasHeight,
-    color: scoreColor,
-    fontFamily: scoreFontFamily,
-    fontSize: scoreTextSize,
-    textAlign: scoreTextAlign,
+    y,
+    fontSize,
   });
 };
 

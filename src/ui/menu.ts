@@ -1,9 +1,11 @@
-import { getGameInstance } from "../classes/game";
+import { Game } from "../classes/game";
 import { canvas, ctx } from "../constants";
 import { drawText } from "../drawing/draw";
 
+const game = Game.getInstance();
+
 // Define the menu options
-const menuOptions = ["Start Game", "Settings"];
+const menuOptions = ["1 Player ", "2 Players"]; //, "Settings"];
 
 // Define the selected menu index (starting from zero)
 let selectedMenuIndex = 0;
@@ -32,6 +34,8 @@ const drawMenuOptions = (): void => {
       // If this menu option is selected, draw it with a different color
       color = `rgba(255, 255, 0)`;
       text = ">" + text;
+    } else {
+      text = " " + text;
     }
 
     drawText({
@@ -50,14 +54,6 @@ export const drawMenu = (): void => {
   ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
   drawTitle();
   drawMenuOptions();
-
-  drawText({
-    text: "Select to play 1 or 2 player with the keys 1 and 2",
-    x: canvas.width / 2,
-    y: canvas.height / 2 + 200,
-    isBold: true,
-    fontSize: 18,
-  });
 };
 
 export const menuCursorDown = (): void => {
@@ -73,10 +69,11 @@ export const menuCursorUp = (): void => {
 
 export const menuActions = (): void => {
   if (selectedMenuIndex === 0) {
-    getGameInstance().newGame();
+    game.setPlayers(1);
   } else if (selectedMenuIndex === 1) {
-    showSettings();
+    game.setPlayers(2);
   }
+  game.newGame();
 };
 
 const showSettings = (): void => {

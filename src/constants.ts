@@ -9,12 +9,12 @@ export const ctx: CanvasRenderingContext2D = canvas.getContext(
 ) as CanvasRenderingContext2D;
 
 // Define the ball speed constant
-export const BALL_SPEED: number = 4; // You can set this value to whatever you want
+export const BALL_SPEED: number = 5; // You can set this value to whatever you want
 
-// Define the paddle height and width constants
-export const PADDLE_HEIGHT: number = 100;
+// Define the paddle height
+export const PADDLE_HEIGHT: number = canvas.height * 1.5;
 // Set the width of the paddles
-export const PADDLE_WIDTH: number = 20;
+export const PADDLE_WIDTH: number = canvas.width * 0.1;
 // Set the speed of the paddles
 export const PADDLE_SPEED: number = 5;
 

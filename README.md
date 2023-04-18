@@ -20,8 +20,7 @@ The game can be run with:
 
 ## TODO
 
--   Add start screen with settings
--   Custom colors for pads and ball
+-   Add settings in start screen
 
 ## License
 

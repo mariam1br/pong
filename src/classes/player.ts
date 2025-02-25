@@ -34,6 +34,10 @@ export class Player {
   }
 
   set height(value) {
+    // Validate paddle height to ensure it's reasonable
+    if (value < 10 || value > 300) {
+      throw new Error("Invalid height value");
+    }
     this._height = value;
   }
 
@@ -42,6 +46,10 @@ export class Player {
   }
 
   set velocityY(value) {
+    // Prevent unrealistic paddle speeds
+    if (Math.abs(value) > 10) {
+      throw new Error("Excessive velocity");
+    }
     this._velocityY = value;
   }
 
@@ -58,6 +66,10 @@ export class Player {
   }
 
   set x(value) {
+    // Ensure paddle stays within horizontal bounds
+    if (value < 0 || value > 800) {
+      throw new Error("X position out of bounds");
+    }
     this._x = value;
   }
 
@@ -66,6 +78,10 @@ export class Player {
   }
 
   set y(value) {
+    // Ensure paddle stays within vertical bounds
+    if (value < 0 || value > 600) {
+      throw new Error("Y position out of bounds");
+    }
     this._y = value;
   }
 

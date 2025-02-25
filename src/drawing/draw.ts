@@ -1,6 +1,7 @@
 import { ctx, canvas, GAME_FONT_FAMILY, DEFAULT_COLOR } from "../constants";
 import { Ball } from "../classes/ball";
 import { BallAndPlayers, Draw, Players } from "../types";
+import { Player } from "../classes/player"; // Add import for Player type
 
 // Set the canvas width and height to the window width and height
 canvas.width = window.innerWidth;
@@ -35,44 +36,38 @@ const drawNet = (): void => {
   ctx.stroke();
 };
 
+// Helper function to draw a single paddle
+// Extracted to eliminate code duplication and improve maintainability
+const drawSinglePaddle = (player: Player, playerName: string): void => {
+  // Check if the player exists
+  if (!player) {
+    throw new Error(`${playerName} paddle is missing`);
+  }
+  
+  // Check if the player has all required properties
+  if (!player.width || !player.height || !player.color) {
+    throw new Error(`${playerName} paddle is missing required properties`);
+  }
+  
+  // Draw the paddle using common code
+  drawRect({
+    x: player.x,
+    y: player.y,
+    width: player.width,
+    height: player.height,
+    color: player.color,
+  });
+};
+
 // Draw the paddles.
 const drawPaddles = (players: Players): void => {
   // destructure the args
-  let { player1, player2 } = players;
+  const { player1, player2 } = players;
 
-  // draw player1 paddle
-  if (player1) {
-    if (player1.width && player1.height && player1.color) {
-      drawRect({
-        x: player1.x,
-        y: player1.y,
-        width: player1.width,
-        height: player1.height,
-        color: player1.color,
-      });
-    } else {
-      throw new Error("player1 paddle is missing a required property");
-    }
-  } else {
-    throw new Error("player1 paddle is missing");
-  }
-
-  // draw player2 paddle
-  if (player2) {
-    if (player2.width && player2.height && player2.color) {
-      drawRect({
-        x: player2.x,
-        y: player2.y,
-        width: player2.width || 0,
-        height: player2.height || 0,
-        color: player2.color || DEFAULT_COLOR,
-      });
-    } else {
-      throw new Error("player2 paddle is missing a required property");
-    }
-  } else {
-    throw new Error("player2 paddle is missing");
-  }
+  // Draw both paddles using the helper function
+  // This eliminates duplicate validation and drawing code
+  drawSinglePaddle(player1, "Player 1");
+  drawSinglePaddle(player2, "Player 2");
 };
 
 // Draw a ball on the screen
@@ -103,17 +98,20 @@ const drawElements = (ballAndPlayers: BallAndPlayers): void => {
 };
 
 const drawRect = (draw: Draw): void => {
-  const { x, y, width: w = 0, height: h = 0, color = DEFAULT_COLOR } = draw;
-  // Check for invalid values.
-  if (w <= 0 || h <= 0) {
-    throw new Error("Invalid parameter");
+  // Use consistent parameter names that match the type definition
+  // instead of aliasing with shorthand (w, h)
+  const { x, y, width, height, color = DEFAULT_COLOR } = draw;
+  
+  // Check for invalid dimensions with a more descriptive error message
+  if (width <= 0 || height <= 0) {
+    throw new Error("Invalid dimensions");
   }
-
-  // Set the fill color.
+  
+  // Set the fill color
   ctx.fillStyle = color;
-
-  // Draw the rectangle.
-  ctx.fillRect(x, y, w, h);
+  
+  // Draw the rectangle
+  ctx.fillRect(x, y, width, height);
 };
 
 const drawCircle = (draw: Draw): void => {

@@ -44,7 +44,7 @@ export class Game {
       PADDLE_WIDTH,
       0,
       DEFAULT_COLOR,
-      this.getAI()
+      this.isAI() // Renamed method from getAI to isAI for better readability
     );
     this.ball = new Ball(
       canvas.width / 2,
@@ -66,7 +66,7 @@ export class Game {
 
   setPlayers(players: number) {
     this.players = players;
-    this.player2.ai = this.getAI();
+    this.player2.ai = this.isAI(); // Updated method call
     this.player2.name = this.getPlayer2Name();
   }
 
@@ -74,7 +74,9 @@ export class Game {
     return this.players > 1 ? "Player 2" : "Computer";
   }
 
-  getAI(): boolean {
+  // Renamed from getAI to isAI to better reflect that this method returns a boolean
+  // This follows proper naming conventions for boolean-returning methods
+  isAI(): boolean {
     return this.players > 1 ? false : true;
   }
 
@@ -95,32 +97,9 @@ export class Game {
     requestAnimationFrame(this.update.bind(this));
   }
 
-  update() {
-    this.gameOver();
-    if (this.gameState === "gameOver") {
-      showGameOverMessage(this.winner as Player);
-      this.gameState = GameState.menu;
-      return; // Exit the game loop if the game is over
-    }
-    clearCanvas();
-    drawElements({
-      ball: this.ball,
-      player1: this.player1,
-      player2: this.player2,
-    });
-    moveBall(this.ball, this.player1, this.player2, this.gameState);
-    movePaddles(this.ball, this.player1, this.player2);
-    checkCollisions({
-      ball: this.ball,
-      player1: this.player1,
-      player2: this.player2,
-    });
-    showScore(this.player1.score, this.player2.score);
-
-    requestAnimationFrame(this.update.bind(this));
-  }
-
-  gameOver() {
+  // Renamed from gameOver to checkGameOver to better describe its action
+  // This method checks win conditions and sets game state
+  private checkGameOver(): void {
     if (
       this.player1.score === WINNING_SCORE ||
       this.player2.score === WINNING_SCORE
@@ -129,5 +108,51 @@ export class Game {
       this.winner =
         this.player1.score > this.player2.score ? this.player1 : this.player2;
     }
+  }
+
+  // New method to handle game over state
+  // Extracted from update method to improve readability
+  private handleGameOver(): void {
+    showGameOverMessage(this.winner as Player);
+    this.gameState = GameState.menu;
+  }
+
+  // New method to manage game physics and object positions
+  // Extracts movement and collision logic from update method
+  private updateGameObjects(): void {
+    moveBall(this.ball, this.player1, this.player2, this.gameState);
+    movePaddles(this.ball, this.player1, this.player2);
+    checkCollisions({
+      ball: this.ball,
+      player1: this.player1,
+      player2: this.player2,
+    });
+  }
+
+  // New method to handle all rendering operations
+  // Separates rendering concerns from game logic
+  private updateDisplay(): void {
+    clearCanvas();
+    drawElements({
+      ball: this.ball,
+      player1: this.player1,
+      player2: this.player2,
+    });
+    showScore(this.player1.score, this.player2.score);
+  }
+
+  // Refactored update method that calls the smaller focused methods
+  // Each method has a single responsibility, making the code more maintainable
+  update() {
+    this.checkGameOver();
+    if (this.gameState === GameState.gameOver) {
+      this.handleGameOver();
+      return; // Exit the game loop if the game is over
+    }
+    
+    this.updateGameObjects();
+    this.updateDisplay();
+    
+    requestAnimationFrame(this.update.bind(this));
   }
 }

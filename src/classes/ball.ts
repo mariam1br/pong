@@ -30,6 +30,12 @@ export class Ball {
   }
 
   set velocityX(value: number) {
+    // Cap velocity to prevent unreasonably fast movement
+    const MAX_VELOCITY = 15;
+    if (Math.abs(value) > MAX_VELOCITY) {
+      // Keep the direction but limit the magnitude
+      value = Math.sign(value) * MAX_VELOCITY;
+    }
     this._velocityX = value;
   }
 
@@ -38,6 +44,12 @@ export class Ball {
   }
 
   set velocityY(value: number) {
+    // Cap velocity to prevent unreasonably fast movement
+    const MAX_VELOCITY = 15;
+    if (Math.abs(value) > MAX_VELOCITY) {
+      // Keep the direction but limit the magnitude
+      value = Math.sign(value) * MAX_VELOCITY;
+    }
     this._velocityY = value;
   }
 
@@ -46,6 +58,10 @@ export class Ball {
   }
 
   set x(value: number) {
+    // Prevent ball from moving outside canvas boundaries
+    if (value < 0 || value > canvas.width) {
+      throw new Error('Ball position out of bounds');
+    }
     this._x = value;
   }
 
@@ -79,5 +95,14 @@ export class Ball {
 
   set radius(value: number) {
     this._radius = value;
+  }
+
+  /**
+   * Updates the ball's position based on its velocity
+   * Uses validated setters to ensure position remains valid
+   */
+  updatePosition(deltaTime: number): void {
+    const newX = this._x + this._velocityX * deltaTime;
+    this.x = newX; // Uses the validated setter
   }
 }
